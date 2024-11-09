@@ -1,0 +1,551 @@
+For industry use either choose between Redhat or Ubuntu.
+Ubuntu is completely free but not Redhat.
+
+Ibm purchased redhat in 2019.
+CentOS is free redhat without branding & support.
+
+Kali linux is debian based used for security, hacking, etc.
+It contains hundreds of security tools.
+
+Terminal emulator = allows you to access system through a shell
+
+Terminator is a console (advanced terminal) 
+	with extra features like multiple windows in one terminal
+	installation: 
+	sudo apt update & sudo apt install terminator
+
+shell = command interpreter, a program that takes the commands
+from the user and gives them to OS kernel to execute
+
+The default shell in many OSs is bash. 
+but there are also other shells: 
+Bourne, C shell, Korne shell, Z shell, etc.
+
+Bash shortcut keyboard:
+	ctrl + l : clears the terminal screen (clear command)
+	ctrl + D : closes the bash shell (exit command)
+	ctrl + a : moves the cursor to the beginning of the line (home key in keyboard)
+	ctrl + e : moves the cursor to the end of line (end)
+	ctrl + u : deletes all the characters before the cursor
+	ctrl + k : deletes all the characters after the cursor
+	ctrl + p : displays the previous command from the history (up arrow)
+	ctrl + n : displays the next command from the history (down arrow)
+	ctrl + r : search for a command in the history
+	ctrl + g : leaves the history searching mode
+	ctrl + c : stops (interrupts) the process running in the current terminal
+	ctrl + z : pauses (stops) the process running in the terminal
+	bg %1 : immidiately after ctrl+z command will resume the paused process
+	
+
+8.8.8.8 = ip of a public dns server made by google
+
+There are 2 types of commands in linux:
+1- commands that are executable files in disk
+(we use man/info command to know about them)
+2- shell built-in commands
+(we use help command to know about them)
+
+use tab completion in terminal to avoid deadly mistakes. 
+(specially with rm command)
+
+rm command = remove, be carefull: 
+	you can't recover items removed by this command
+
+rm -r [file] = remove recursive (used to remove directories)
+rm -i [file] = shows warning (prompt)
+rm -v [file] = shows information (verbose) about what removed
+rm -f [file] = -f stands for 'force': not recieve a warning or prompt
+
+rm *.txt = dangerous command. before that execute:
+echo *.txt = see what items will be affected
+
+In linux everything either is a file (in filesystem),
+or is a process. (?)
+Even terminal itself is treated as a file in linux:
+tty = this command shows the file behind terminal.
+
+The terms 'folder' and 'directory' are interchangable.
+Directory = filesystem concept
+folder = Graphical metaphor used to represent directory
+
+Relative path = a path defined related to current working directory.
+    Relative path starts with a forward? slash (/).
+Absolute path = a complete path defined beginning with root.
+
+single dot (.) = current directory you are in.
+double dot (..) = the parent directory.
+
+su : temporarily (until log out) root access in the terminal
+sudo su : brings roots terminal 
+	gives you all roots privileges, using it is not recommended. 
+	It's better to use root privileges only when you need it. example:
+		sudo apt update
+	This way you don't have to remember to log out when you finished your job.
+		
+id : prints the user and the groups in the current terminal
+pwd : current work directory
+exit : log out
+
+sudo groupadd group_name : creates a new group with name `group_name`
+sudo useradd john : creates a new user (in which group? the current?
+
+when you run sudo and give the correct password: 
+	it won't ask againg for password until 5 minutes (by default)
+	sudo -v : to extend for another 5 minutes without running a command
+	sudo -k : to expire this time and ask for password next time:
+	
+sudo passwd username : change password for the user
+the root user can change the password of any user
+
+history : shows the last commands that have been ran and saved in the memory (updated)
+cat .bash_history : not updated
+	you need to log out and login again to see the last commands
+	
+history -c : clears the history (in the memory?)
+
+!17 : runs the command in line 17 from the history
+!! : runs the last command from the history
+!-3 : runs the 3-th command from the end of the history
+!ping : runs the last ping command of the history
+	this is dangerous because you don't know which command will be executed
+	add :p to the end of it so it will show the command in the history first without running it
+
+How to run a command without saving it in the history?
+	if we run history -c command, this will be saved and it's suspecious.
+	if we run vi .bash_history to edit the history file, it will be saved as well.
+	The answer is:
+		Type a space at the beginning, before the command, example:
+		 ls -l (won't save it. works both in ubuntu and centos)
+		 
+There is a special variable named HISTCONTROL 
+	which can be used to ignore commmands and not save them in history
+HISTCONTROL options:
+	ignorespace / ignoredups(duplicates) / ignoreboth
+	
+echo $HISTCONTROL
+	ignorespace in ubuntu
+	ignoredups in centos by default
+	to change it: HISTCONTROL=ignorespace
+	
+history doesn't show the time the command executed by default:
+	to show time we set the environment variable, HISTTIMEFORMAT, example:
+	HISTTIMEFORMAT="%y-%m-%d %T"
+	HISTTIMEFORMAT="%d/%m/%y %T"
+	
+If you want this time format to be persistant after logging out,
+	you need to add the command to the .bashrc file:
+	echo "HISTTIMEFORMAT=\"%d/%m/%y %T\"" >> .bashrc
+	(check if the command is added to the last line of the .bashrc file: cat .bashrc)
+
+HISTFILESIZE : 
+	an environment variable controlling the number of commands 
+	saved in history (2000 by default)
+	to print an environment variable: 
+	echo $HISTFILESIZE 
+HISTSIZE :
+	controls how many commands from history will be stored in the memory (1000)
+.bash_history file
+
+
+ls - pwd - cd
+
+reboot
+exit
+
+stat /etc/passwd : showing statistics about the file including the timestamps
+	access time, modification time, change time
+
+cat = shows file in terminal - used for small files
+	because cat is not interactive - you can't scroll files
+cat is short word for "concatenate": when you use it 
+	for multiple files, it concatenates all of them.
+
+touch = create new file
+
+tree = recursive directory listing tool, shows files tree
+tree -d = show only directories
+tree -f = show relative path to each file
+
+du command = disk space usage
+
+The back slash character (\) cancels the alias.
+
+There are 3 type of timestamp for each file in linux:
+	atime=access read, 
+	mtime=modification write, 
+	ctime=change metadata information of the file
+
+to see the timestamps of a file use 
+	either stat command or ls related with options: 
+	ls -l / ls -lt: for modify(write) timestamps
+	ls -lu : for access(read) timestamp
+	ls -lc : for change timestamp
+	to see the time completely, use the --full-time flag
+	
+With this command you can change the modification time of the file!
+touch -m -t [a time, even in past!] [filename]
+example:
+	sudo touch -m -t YearMonthDayHourMinute.Second [filename]
+	sudo touch -m -t 201812301530.45 etc/passwd
+
+If the file doesn't exists:
+	touch command will create the file.
+if file exists:
+	touch will change times of file to the system's current time.
+	
+touch -a [filename] : changes the access time (and change time) to the current time
+
+Change both access and modification time with this:
+touch -d [time] [filename]
+	note that -d and -t accep different date-time formats:
+	sudo touch -d "2010-10-27 15:45:30" etc/passwd
+	
+touch -r : use timestamps of another file as a reference:
+	touch file_1 -r file_ref
+
+Q: what about change time? can we set that too?
+That is not possible to set only the change time to a specific timestamp.
+There is a trick:
+	1- Modify the system clock. 2- run command: touch [filename]
+	The change time changes to the time you've set for system.
+But usually when you set either access or modify time, change time also changes.
+
+Use a file as a reference to set timestamps of another:
+touch [new file] -r [reference file]
+
+date command = see and set system date and time
+
+ls sorts reults by default: alphabetical order
+ls -lt : sort by (modification by default time)
+ls -ltu: sort by access time
+
+ls -r = reverse sort
+ls -1 = one result per line
+
+Linux determines the type of a file by a code in its header.
+It's common for files in linux to have no extension.
+
+extensions are useful only for graphical applications.
+
+All executable files and commands have no extension.
+	In windows they have .exe 
+
+.log file is probably a log file.
+.conf file is probably config file.
+
+mv [source] [destination] = move (rename) files
+if the source file is in same directory as destination = mv becomes rename.
+
+mv also overwrites without warning!
+to prevent mv from overwriting, use -i option:
+mv -i [source] [destination] = asks before overwriting
+
+mv -u [source] [destination] = move iff source is newer than  
+	destination file or there isn't such a file with similar name.
+
+file [file] = determines type of the file
+
+ls -l = long list format (shows more information)
+	first character (-, d, l, b, c, s, p): the file type
+		- : means file
+		d : means directory
+		l : means symbol link (symlink = shortcut)
+		b : block device (partition?, drive?)
+		c : char device 
+			(logical hardware devices like disk, partition,	serial port, etc.)
+		s: socket (this is for communication):
+			not that socket term we use in tcp-ip networking
+		p : a named pipe (pipe sends output of one command to another)
+			provides easy way for processes to communicate
+	other characters: Access mode of users & groups, etc.
+
+ls -F = classify: append indicator (one of */=>@|) to files
+	no symbol : means regular non-executable file
+	/ : means directory
+	@ : means symbol link (shortcut)
+	= : means socket
+	| : vertical bar means pipe (a named pipe)
+	* : means executable files
+	> : means
+
+more & less commands = reading tools of files in terminal
+less command is more advanced than more. (extended form of more)
+
+The context of man [command] by default displays with less.
+
+tail [file] = read last (10 default) lines of the file in terminal
+tail -n 2 [file] = read last 2 lines of the file in terminal
+tail -n +20 [file] = read last lines starting from line 20
+
+tail -f [file] = actively prints real time changes of file!
+tail -f /var/log/auth.log = see who logs in real time!
+when you are finished with tail, press ctrl+c (interrupt)
+
+head [file] = complementary command of tail, prints first (10) lines
+head -n -7 [file] = first 7 lines of file
+head -7 etc/group : show the first 7 groups
+
++ in head & tail: counts from up to down
+- in head & tail: counts from down to up
+
+head & tail : always complement each other
+
+watch 
+	if you want to run a command repeatedly, looking for it's output and error, use watch
+	by default it will run the command every 2 seconds, until interrupted (ctrl+c).
+	executes the program periodically, showing output fullscreen
+example: 
+	watch -n 3 -d ls -l: 
+		[ls -l] : command, 
+		-d : higlight differences, 
+		-n 3 : update time interval
+
+mkdir = make directory
+mkdir -p [parent/child] = creates parent first if doesn't exit instead of error
+
+cp command = copy
+cp -v: -v stands for verbose (shows brief explanation of what happend)
+
+cp normally overwrites existing files without warning!
+cp -i [source] [destination] = it will show warning: overwrite?
+
+shred [file] = Overwrite the specified FILE(s) repeatedly, in order to 
+	make it harder for even very expensive hardware probing to recover the data.
+
+shred -u [file] = remove after overwriting.
+
+grep command = searches for a string inside a file/text
+	and displays the lines containing the string in the screen.
+	
+pipe (|): sends output of first command as input to the second:
+	first command | second command
+	
+Example: 
+	cat -n /var/log/auth.log : this command prints the file with line number (-n)
+	cat -n /var/log/auth.log | grep -a "authentication failure" : searches for the phrase
+	cat -n /var/log/auth.log | grep -a "authentication failure" | wc -l : counts the lines
+	so the above command counts the number of lines having "authentication failure" in `auth.log`
+
+wc = word count: prints number of (line, word, characters) for each file
+wc -l = line count: prints number of lines (ex: grep  sth | wc -l)
+wc -w = word count
+wc -c = character count
+
+output redirection: save output of a command in a file:
+	example: ls > myfile.txt (saves output of ls in myfile.txt)
+
+if we place number of stream (0:input, 1:output, 2:error) before > operator:
+	it will send that stream (1: ouput by default) to the file.
+	it is not allowd to put any space between >, >> and number:
+	example (this command returns permission denied error): 
+		tail -n 3 /etc/shadow 2> error_msg.txt
+	
+we can instead of overwriting, append output to end of the file
+	by using >> operator
+	example: ls >> myfile.txt (appends to the end of myfile.txt)
+	the >> operator creates the file if it doesn't exist.
+	
+we can redirect different streams (i.e. output and error) to different files:
+	tail -n 2 /etc/passwd /etc/shadow > output.txt 2> error.txt
+	
+also we can redirect both streams to the same file:
+	tail -n 2 /etc/passwd /etc/shadow > all_output.txt 2> &1
+	(here if we don't use & before 1, it will create a seperated file named 1)
+
+tee command:
+if you want to see the output streams both in file and terminal:
+	you should use 'tee' instead of > operator:
+	example: ls | tee ls.txt (instead of ls > ls.txt)
+	tee also shows the output in the terminal.
+[cmd] | tee -a [file]: appends to file if exists
+	
+cut = remove sections from each line of files
+cut -d ["STRING"] -f[n] = -d stands for delimeter 
+	(n-th accurance of STRING using -fn)
+
+locate & find = 2 commands to find files
+locate is older than find and is not installed by default in ubuntu 20.04
+locate is faster than find because locate uses its pre-built database
+but find searches real time
+on the other hand, the find command has more options available,
+
+the databse which locate uses should be update periodically
+it can be done either manually (sudo updatedb) or 
+run automatic by cron (for example daily)
+we will talk about cron jobs later
+
+locate -S = statistics: like how many files are indexed
+locate name = searches for *name*
+
+locate -b '\name' = searches for exact name
+locate -e name = it will check if file still exists (avoid showing removed items)
+
+locate -i name = ignore case (not case sensitive)
+locate -r = regex
+
+which [command name] = returns the absolute path of executable file of command
+
+find . -name "todo.txt" =
+	searchs for a file named "todo.txt" in (.) current directory
+	you can also write file name without double quotes: todo.txt
+	-name searches case sensitive use -iname if you want case insensitive
+	
+find . -name "todo*" = if you don't know file name exactly
+
+find . -name "todo.txt" -delete =
+	to find and delete the file pass the -delete option to find command
+	be careful this will delete the files without the ability of recovering!
+	first check without -delete: if find shows multiple files, it'll delete all of them!
+
+find [path] -name "File_Name" -ls = 
+	it'll execute the ls command on each file it finds
+
+find [path] -type [type_name] = 
+	use -type to search by type
+	example: sudo find /etc/ -name "*p" -type d = 
+		searchs for DIRECTORIES with name ending with p in /etc/
+		d means directory, f means file 
+
+sudo find /etc/ -name "*p" -type d -maxdepth 2 =
+	-maxdepth option = search to max depth of 2 in directories
+	if you dont specify it will search to the end: maybe time & resource consuming
+	
+find [path] -name "file_name" -type [type_name] -maxdepth [number] -perm [number]:
+	-perm option: search for files with those exact permissions
+	example: sudo find /etc/ -maxdepth 2 -name "f*" -type d -perm 755
+
+find with -size [number]: search by size with -size option. 
+	example: sudo find /var/ -type f -size 100k -ls
+	find -size +[number] = finds size greater than number (plus before number)
+	find -size -[number] = finds size smaller than number (minus before number)
+	k after number means kilobytes, M means megabytes
+	
+example:
+	sudo find /var/ -type f -size +10M -ls | wc -l
+	finds files greater than 10 Megabytes 
+		then counts number of them with word count (-line)
+example:
+	sudo find /var/ -type f -size +5M -size -10M
+		finds files between 5 and 10 megabytes
+		
+find -atime -mtime -ctime options:
+	search by access modify changeMetaData timestamps
+	
+example: find all files that are modified in last 24 hours (day):
+	sudo find /var/ -type f -mtime 0
+	we use 0 because any fractional parts is ignored: 
+	i.e: if a file changed 12h ago, it means 0 days
+	
+example: files modified between 1 and 2 days ago:
+	sudo find /var/ -type f -mtime ?
+	
+examples: find the files that accessed at least 2 days ago:
+	sudo find /var/ -type f -atime +1
+	+1 means greater than 1 day (2 and above)
+	
+If you want to search by minute, use -amin -mmin, -cmin options
+	example: find files modefied in least 60 minutes
+	find /var/ -type f -mmin -60 [= less than 60 min]
+	
+find files that belong to a specific user: -user option
+find files that belong to a specific group: -group option
+
+find everything BUT sth = 
+	to nagete an option use -not before an option
+
+example: find files in /etc/ which doesn't belong to group root:
+	sudo find /etc/ -type f -not -group root
+	
+sudo ls -RF /etc/ | grep -v / | grep -v "^$" | sort -r > ohmyfile.txt
+	grep -v / : exclude the lines containing "/" with -v option
+	grep -v "^$": exclude the empty lines, "^$" is a regex for empty line
+	sort -r : sort in alphabetical reverse order
+	> ohmyfile.txt : output to a file with name ohmyfile.txt
+	
+tree /var | grep dmesg -B 100 | grep dmesg. -v
+	I tried to find "dmesg" file parent with this command
+here are some grep options:
+	-B 100 option : show 100 lines before the result also
+	-A 100 option : show 100 lines after the result also
+	-C 100 option : show 100 lines after & before the result also
+	-R option: show results recursive (for directories)
+	-v : exclude the results I don't want
+	-c : show only the number of matching lines (like wc -l command)
+	-s : ignore error messages like file doesn't exist
+	-a : for search in binary files like text files
+	-w : select only the whole word matches (e.g: don't return 'teacher' for 'teach')
+	-i : ignore case
+	-n : show line number
+	
+grep searchs for strings in text files
+however, binary files may contain ASCI characters in human readable format
+strings : this command exracts printable string from binary files
+
+cmp file_a file_b : cmp command shows only if there is difference between file_a & file_b
+cmp can be used to compare binary files as well
+
+sha256sum : compute and check SHA256 message digest
+
+diff command : shows differences, only for text files
+
+diff symbols:
+	numbers in first line: line numbers of files
+	c : means "changed"
+	a : means "added" or "append"
+	d : means "deleted"
+	< : "less than sign", means the first file
+	> : "greater than sign", means the second file
+	
+diff options:
+	-i : ignore case
+	-B : ignore blank lines
+	-w : ignore white spaces
+	-c : more detailed comparison
+	-y : show two files side by side, indicating differences
+	
+patch : apply a diff file to an original
+	this command is useful for eliminating differences between two files
+
+To config or change any thing in linux you need to edit a specific configuration file
+
+CLI = command line interface text editors (withou GUI)
+So you can use CLI editors when working with servers, in linux terminal
+Examples: VI, Vim, Nano ...
+
+VI : the original text editor released ni unix
+Vim: Improved VI
+sudo apt install vim : installs vim
+
+vi a.txt : opens the file a.txt in vim
+vi is an alias to vim, both in ubuntu and centos
+you can check this by "which vi" command
+
+:wq = quites the vim editors
+
+Vim has 3 basic modes of operation:
+- command
+- insert
+- last line
+
+when opening a file with vim you are in the command mode
+characters you type get interpreted
+
+to type as like a normal text editor,
+you need to enter the insert mode (press i)
+
+press esc to exit insert and back to command mode
+
+to enter to the insert mode, use this keys:
+i, I, a, A, o, O
+they differ in which line (current, next, ...) and where (first, append to last, ...)
+
+the last line mode of vim
+by pressing ":" you get to this mode
+
+:q! = quites vim without saving the file
+
+vimtutor = this command opens a tutorial file about vim
+
+
+
+
